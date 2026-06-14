@@ -295,3 +295,56 @@ user_id | full_name     | booking_id
 3 | Sajjad Rahman |        505
 4 | Jannat Ara    |       NULL   ← no booking, but still listed
  */
+-- -------------------------------------------------------------------------
+-- Query 6: Bookings where total_cost is higher than the average cost
+-- Concepts used: Subquery with AVG()
+-- Average = (150+120+150+150+120) / 5 = 138.00
+-- So bookings > 138 → booking IDs 501, 503, 504 (all 150.00)
+-- -------------------------------------------------------------------------
+SELECT
+    booking_id,
+    match_id,
+    total_cost
+FROM
+    Bookings
+WHERE
+    total_cost > (
+        SELECT
+            AVG(total_cost)
+        FROM
+            Bookings
+    );
+
+/*
+Expected Output:
+booking_id | match_id | total_cost
+------------+----------+------------
+501 |      101 |     150.00
+503 |      101 |     150.00
+504 |      101 |     150.00
+ */
+-- -------------------------------------------------------------------------
+-- Query 7: Top 2 most expensive matches, skipping the absolute highest
+-- Concepts used: ORDER BY DESC, LIMIT, OFFSET
+-- OFFSET 1 → skips Real Madrid vs Barcelona (150) which is rank #1
+-- -------------------------------------------------------------------------
+SELECT
+    match_id,
+    fixture,
+    base_ticket_price
+FROM
+    Matches
+ORDER BY
+    base_ticket_price DESC
+LIMIT
+    2
+OFFSET
+    1;
+
+/*
+Expected Output (skips Real Madrid vs Barcelona at 150):
+match_id | fixture              | base_ticket_price
+----------+----------------------+-------------------
+103 | Bayern Munich vs PSG |            130.00
+102 | Man City vs Liverpool|            120.00
+ */
