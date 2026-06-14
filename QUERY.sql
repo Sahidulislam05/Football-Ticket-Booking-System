@@ -182,3 +182,49 @@ VALUES
     (503, 2, 101, 'A-13', 'Confirmed', 150.00),
     (504, 2, 101, NULL, NULL, 150.00),
     (505, 3, 102, 'C-20', 'Pending', 120.00);
+
+-- =========================================================================
+-- PART 2: SQL QUERIES
+-- =========================================================================
+-- -------------------------------------------------------------------------
+-- Query 1: Retrieve all Champions League matches where status is 'Available'
+-- Concepts used: WHERE with AND condition
+-- -------------------------------------------------------------------------
+SELECT
+    match_id,
+    fixture,
+    base_ticket_price
+FROM
+    Matches
+WHERE
+    tournament_category = 'Champions League'
+    AND match_status = 'Available';
+
+/*
+Expected Output:
+match_id | fixture                  | base_ticket_price
+----------+--------------------------+-------------------
+101 | Real Madrid vs Barcelona |            150.00
+103 | Bayern Munich vs PSG     |            130.00
+ */
+-- -------------------------------------------------------------------------
+-- Query 2: Search users whose name starts with 'Tanvir' OR contains 'Haque'
+-- Concepts used: ILIKE (case-insensitive pattern matching)
+-- -------------------------------------------------------------------------
+SELECT
+    user_id,
+    full_name,
+    email
+FROM
+    Users
+WHERE
+    full_name ILIKE 'Tanvir%'
+    OR full_name ILIKE '%Haque%';
+
+/*
+Expected Output:
+user_id | full_name     | email
+---------+---------------+------------------
+1 | Tanvir Rahman | tanvir@mail.com
+2 | Asif Haque    | asif@mail.com
+ */
