@@ -228,3 +228,70 @@ user_id | full_name     | email
 1 | Tanvir Rahman | tanvir@mail.com
 2 | Asif Haque    | asif@mail.com
  */
+-- -------------------------------------------------------------------------
+-- Query 3: Bookings where payment_status is NULL → show 'Action Required'
+-- Concepts used: IS NULL, COALESCE
+-- -------------------------------------------------------------------------
+SELECT
+    booking_id,
+    user_id,
+    match_id,
+    COALESCE(payment_status, 'Action Required') AS systematic_status
+FROM
+    Bookings
+WHERE
+    payment_status IS NULL;
+
+/*
+Expected Output:
+booking_id | user_id | match_id | systematic_status
+------------+---------+----------+-------------------
+504 |       2 |      101 | Action Required
+ */
+-- -------------------------------------------------------------------------
+-- Query 4: Booking details with user's full name and match fixture
+-- Concepts used: INNER JOIN (joins only matching rows from both sides)
+-- -------------------------------------------------------------------------
+SELECT
+    b.booking_id,
+    u.full_name,
+    m.fixture,
+    b.total_cost
+FROM
+    Bookings b
+    INNER JOIN Users u ON b.user_id = u.user_id
+    INNER JOIN Matches m ON b.match_id = m.match_id;
+
+/*
+Expected Output:
+booking_id | full_name     | fixture                  | total_cost
+------------+---------------+--------------------------+------------
+501 | Tanvir Rahman | Real Madrid vs Barcelona |     150.00
+502 | Tanvir Rahman | Man City vs Liverpool     |     120.00
+503 | Asif Haque    | Real Madrid vs Barcelona |     150.00
+504 | Asif Haque    | Real Madrid vs Barcelona |     150.00
+505 | Sajjad Rahman | Man City vs Liverpool     |     120.00
+ */
+-- -------------------------------------------------------------------------
+-- Query 5: All users and their booking IDs (including fans with NO bookings)
+-- Concepts used: LEFT JOIN (keeps ALL rows from the left/Users table)
+-- -------------------------------------------------------------------------
+SELECT
+    u.user_id,
+    u.full_name,
+    b.booking_id
+FROM
+    Users u
+    LEFT JOIN Bookings b ON u.user_id = b.user_id;
+
+/*
+Expected Output:
+user_id | full_name     | booking_id
+---------+---------------+------------
+1 | Tanvir Rahman |        501
+1 | Tanvir Rahman |        502
+2 | Asif Haque    |        503
+2 | Asif Haque    |        504
+3 | Sajjad Rahman |        505
+4 | Jannat Ara    |       NULL   ← no booking, but still listed
+ */
