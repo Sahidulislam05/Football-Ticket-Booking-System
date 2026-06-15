@@ -13,7 +13,6 @@ A relational database design and SQL query project built with **PostgreSQL**, si
 - [Table Definitions](#-table-definitions)
 - [Setup & Installation](#-setup--installation)
 - [SQL Queries (Part 2)](#-sql-queries-part-2)
-- [Theory Questions (Part 3)](#-theory-questions-part-3)
 - [Sample Data](#-sample-data)
 - [Author](#-author)
 
